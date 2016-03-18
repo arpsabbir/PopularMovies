@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import me.zaicheng.app.popularmovies.data.model.Movie;
+import me.zaicheng.app.popularmovies.data.model.Movie_Table;
 import me.zaicheng.app.popularmovies.data.remote.MovieService;
 import rx.Observable;
 import rx.Subscriber;
@@ -68,10 +71,25 @@ public class MovieDetailFragment extends Fragment {
         final MovieService movieService = MovieService.Creator.newMovieService();
 
         if (movieId != -1) {
-            Observable<Movie> movieObservable = movieService.getMovieObservableById(movieId);
+            Observable<Movie> movieOb = Observable.create(new Observable.OnSubscribe<Movie>() {
+                @Override
+                public void call(Subscriber<? super Movie> subscriber) {
+                    try {
+                        if (!subscriber.isUnsubscribed()) {
+                            Movie movie = new Select().from(Movie.class).where(Movie_Table.id.is(movieId)).querySingle();
+                            subscriber.onNext(movie);
+                            subscriber.onCompleted();
+                        }
+                    } catch (Exception e) {
+                        subscriber.onError(e);
+                    }
+                }
+            });
 
-            movieObservable.observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.newThread())
+            // Observable<Movie> movieObservable = movieService.getMovieObservableById(movieId);
+
+            movieOb.observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
                     .subscribe(new Subscriber<Movie>() {
                         @Override
                         public void onCompleted() {

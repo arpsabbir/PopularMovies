@@ -3,6 +3,10 @@ package me.zaicheng.app.popularmovies.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -13,8 +17,11 @@ import java.util.List;
 
 import javax.annotation.Generated;
 
+import me.zaicheng.app.popularmovies.data.local.MovieDatabase;
+
+@Table(database = MovieDatabase.class)
 @Generated("org.jsonschema2pojo")
-public class Movie {
+public class Movie extends BaseModel {
 
     @SerializedName("adult")
     @Expose
@@ -34,6 +41,8 @@ public class Movie {
     @SerializedName("homepage")
     @Expose
     private String homepage;
+    @Column
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     private long id;
@@ -46,12 +55,14 @@ public class Movie {
     @SerializedName("original_title")
     @Expose
     private String originalTitle;
+    @Column
     @SerializedName("overview")
     @Expose
     private String overview;
     @SerializedName("popularity")
     @Expose
     private double popularity;
+    @Column(name = "poster_path")
     @SerializedName("poster_path")
     @Expose
     private String posterPath;
@@ -61,6 +72,7 @@ public class Movie {
     @SerializedName("production_countries")
     @Expose
     private List<ProductionCountry> productionCountries = new ArrayList<ProductionCountry>();
+    @Column(name = "release_date")
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
@@ -79,12 +91,14 @@ public class Movie {
     @SerializedName("tagline")
     @Expose
     private String tagline;
+    @Column
     @SerializedName("title")
     @Expose
     private String title;
     @SerializedName("video")
     @Expose
     private boolean video;
+    @Column(name = "vote_average")
     @SerializedName("vote_average")
     @Expose
     private double voteAverage;

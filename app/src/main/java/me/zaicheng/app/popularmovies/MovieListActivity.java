@@ -14,6 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.SaveModelTransaction;
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import java.util.List;
 
 import me.zaicheng.app.popularmovies.data.model.Movie;
@@ -89,7 +94,12 @@ public class MovieListActivity extends AppCompatActivity {
                     @Override
                     public void onNext(MoviesResponse moviesResponse) {
                         Log.d("TAG", moviesResponse.toString());
-                        ((RecyclerView) recyclerView).setAdapter(new SimpleItemRecyclerViewAdapter(moviesResponse.getResults()));
+
+                        TransactionManager
+                                .getInstance()
+                                .addTransaction(new SaveModelTransaction(ProcessModelInfo
+                                        .withModels(moviesResponse.getResults())));
+                        ((RecyclerView) recyclerView).setAdapter(new SimpleItemRecyclerViewAdapter(new Select().from(Movie.class).queryList()));
                     }
                 });
     }
@@ -114,7 +124,7 @@ public class MovieListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = movieList.get(position);
             holder.mIdView.setText(movieList.get(position).getTitle());
-            holder.mContentView.setText(movieList.get(position).getOriginalTitle());
+            holder.mContentView.setText(movieList.get(position).getPosterPath());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
