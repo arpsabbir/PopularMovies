@@ -19,72 +19,16 @@ public class MoviesResponse {
 
     @SerializedName("page")
     @Expose
-    private long page;
+    public long page;
     @SerializedName("results")
     @Expose
-    private List<Movie> results = new ArrayList<>();
+    public List<Movie> results = new ArrayList<Movie>();
     @SerializedName("total_pages")
     @Expose
-    private long totalPages;
+    public long totalPages;
     @SerializedName("total_results")
     @Expose
-    private long totalResults;
-
-    /**
-     * @return The page
-     */
-    public long getPage() {
-        return page;
-    }
-
-    /**
-     * @param page The page
-     */
-    public void setPage(long page) {
-        this.page = page;
-    }
-
-    /**
-     * @return The results
-     */
-    public List<Movie> getResults() {
-        return results;
-    }
-
-    /**
-     * @param results The results
-     */
-    public void setResults(List<Movie> results) {
-        this.results = results;
-    }
-
-    /**
-     * @return The totalPages
-     */
-    public long getTotalPages() {
-        return totalPages;
-    }
-
-    /**
-     * @param totalPages The total_pages
-     */
-    public void setTotalPages(long totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    /**
-     * @return The totalResults
-     */
-    public long getTotalResults() {
-        return totalResults;
-    }
-
-    /**
-     * @param totalResults The total_results
-     */
-    public void setTotalResults(long totalResults) {
-        this.totalResults = totalResults;
-    }
+    public long totalResults;
 
     @Override
     public String toString() {

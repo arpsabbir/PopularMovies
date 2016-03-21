@@ -98,7 +98,8 @@ public class MovieListActivity extends AppCompatActivity {
                         TransactionManager
                                 .getInstance()
                                 .addTransaction(new SaveModelTransaction(ProcessModelInfo
-                                        .withModels(moviesResponse.getResults())));
+                                        .withModels(moviesResponse.results)));
+
                         ((RecyclerView) recyclerView).setAdapter(new SimpleItemRecyclerViewAdapter(new Select().from(Movie.class).queryList()));
                     }
                 });
@@ -123,16 +124,16 @@ public class MovieListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = movieList.get(position);
-            holder.mIdView.setText(movieList.get(position).getTitle());
-            holder.mContentView.setText(movieList.get(position).getPosterPath());
+            holder.mIdView.setText(movieList.get(position).title);
+            holder.mContentView.setText(movieList.get(position).posterPath);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putLong(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
-                        Log.d(TAG, "onClick: id = " + holder.mItem.getId());
+                        arguments.putLong(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.tmdb_id);
+                        Log.d(TAG, "onClick: id = " + holder.mItem.tmdb_id);
 
                         MovieDetailFragment fragment = new MovieDetailFragment();
                         fragment.setArguments(arguments);
@@ -142,8 +143,8 @@ public class MovieListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, MovieDetailActivity.class);
-                        intent.putExtra(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
-                        Log.d(TAG, "onClick: id = " + holder.mItem.getId());
+                        intent.putExtra(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.tmdb_id);
+                        Log.d(TAG, "onClick: id = " + holder.mItem.tmdb_id);
 
                         context.startActivity(intent);
                     }

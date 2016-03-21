@@ -14,7 +14,6 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.data.model.Movie_Table;
-import me.zaicheng.app.popularmovies.data.remote.MovieService;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -68,15 +67,13 @@ public class MovieDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.movie_detail, container, false);
 
-        final MovieService movieService = MovieService.Creator.newMovieService();
-
         if (movieId != -1) {
             Observable<Movie> movieOb = Observable.create(new Observable.OnSubscribe<Movie>() {
                 @Override
                 public void call(Subscriber<? super Movie> subscriber) {
                     try {
                         if (!subscriber.isUnsubscribed()) {
-                            Movie movie = new Select().from(Movie.class).where(Movie_Table.id.is(movieId)).querySingle();
+                            Movie movie = new Select().from(Movie.class).where(Movie_Table.tmdb_id.is(movieId)).querySingle();
                             subscriber.onNext(movie);
                             subscriber.onCompleted();
                         }
@@ -103,7 +100,7 @@ public class MovieDetailFragment extends Fragment {
 
                         @Override
                         public void onNext(Movie movie) {
-                            ((TextView) rootView.findViewById(R.id.movie_detail)).setText(movie.getOverview());
+                            ((TextView) rootView.findViewById(R.id.movie_detail)).setText(movie.overview);
                         }
                     });
         }
