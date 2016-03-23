@@ -1,4 +1,4 @@
-package me.zaicheng.app.popularmovies;
+package me.zaicheng.app.popularmovies.ui.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +11,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+import me.zaicheng.app.popularmovies.R;
+import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
+
 /**
  * An activity representing a single Movie detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link MovieListActivity}.
+ * in a {@link MoviesActivity}.
  */
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -75,7 +78,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            NavUtils.navigateUpTo(this, new Intent(this, MovieListActivity.class));
+            NavUtils.navigateUpTo(this, new Intent(this, MoviesActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

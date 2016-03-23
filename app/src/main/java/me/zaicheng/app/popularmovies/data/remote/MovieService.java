@@ -9,18 +9,15 @@ import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import java.io.IOException;
 
 import me.zaicheng.app.popularmovies.BuildConfig;
-import me.zaicheng.app.popularmovies.data.model.Movie;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -31,24 +28,11 @@ public interface MovieService {
 
     // get Popular movies
     @GET("movie/popular")
-    Call<MoviesResponse> getPopularMovies();
-
-    @GET("movie/popular")
     Observable<MoviesResponse> getPopularMoviesObservable();
 
     // get top rated movies
     @GET("movie/top_rated")
-    Call<MoviesResponse> getTopRatedMovies();
-
-    @GET("movie/top_rated")
     Observable<MoviesResponse> getTopRatedMoviesObservable();
-
-    // get movie details
-    @GET("movie/{id}")
-    Call<Movie> getMovieById(@Path("id") long id);
-
-    @GET("movie/{id}")
-    Observable<Movie> getMovieObservableById(@Path("id") long id);
 
     class Creator {
         public static MovieService newMovieService() {

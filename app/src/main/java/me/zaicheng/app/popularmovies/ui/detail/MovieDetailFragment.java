@@ -1,4 +1,4 @@
-package me.zaicheng.app.popularmovies;
+package me.zaicheng.app.popularmovies.ui.detail;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import me.zaicheng.app.popularmovies.R;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.data.model.Movie_Table;
+import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,7 +23,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * A fragment representing a single Movie detail screen.
- * This fragment is either contained in a {@link MovieListActivity}
+ * This fragment is either contained in a {@link MoviesActivity}
  * in two-pane mode (on tablets) or a {@link MovieDetailActivity}
  * on handsets.
  */

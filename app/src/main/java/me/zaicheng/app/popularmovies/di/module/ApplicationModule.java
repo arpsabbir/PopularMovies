@@ -3,9 +3,13 @@ package me.zaicheng.app.popularmovies.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
+import me.zaicheng.app.popularmovies.data.remote.MovieService;
 import me.zaicheng.app.popularmovies.di.ApplicationContext;
+import me.zaicheng.app.popularmovies.rxbus.RxBus;
 
 /**
  * Created by vmlinz on 3/17/16.
@@ -29,5 +33,17 @@ public class ApplicationModule {
     @ApplicationContext
     Context provideContext(){
         return mApplication;
+    }
+
+    @Provides
+    @Singleton
+    RxBus provideEventBus() {
+        return RxBus.newInstance();
+    }
+
+    @Provides
+    @Singleton
+    MovieService provideMovieService() {
+        return MovieService.Creator.newMovieService();
     }
 }

@@ -1,7 +1,9 @@
 package me.zaicheng.app.popularmovies.di.component;
 
 import dagger.Component;
-import me.zaicheng.app.popularmovies.MovieListActivity;
+import me.zaicheng.app.popularmovies.ui.detail.MovieDetailActivity;
+import me.zaicheng.app.popularmovies.ui.detail.MovieDetailFragment;
+import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
 import me.zaicheng.app.popularmovies.di.PerActivity;
 import me.zaicheng.app.popularmovies.di.module.ActivityModule;
 
@@ -12,5 +14,7 @@ import me.zaicheng.app.popularmovies.di.module.ActivityModule;
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
-    void inject(MovieListActivity movieListActivity);
+    void inject(MoviesActivity moviesActivity);
+    void inject(MovieDetailActivity movieDetailActivity);
+    void inject(MovieDetailFragment movieDetailFragment);
 }
