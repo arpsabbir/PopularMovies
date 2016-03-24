@@ -19,14 +19,14 @@ import butterknife.ButterKnife;
 import me.zaicheng.app.popularmovies.R;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.ui.base.BaseActivity;
-import me.zaicheng.app.popularmovies.ui.detail.MovieDetailActivity;
+import me.zaicheng.app.popularmovies.ui.detail.DetailActivity;
 import timber.log.Timber;
 
 /**
  * An activity representing a list of Movies. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link MovieDetailActivity} representing
+ * lead to a {@link DetailActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */

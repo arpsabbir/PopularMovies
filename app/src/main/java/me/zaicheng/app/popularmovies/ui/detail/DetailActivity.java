@@ -4,14 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import me.zaicheng.app.popularmovies.R;
+import me.zaicheng.app.popularmovies.ui.base.BaseActivity;
 import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
 
 /**
@@ -20,17 +22,23 @@ import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
  * item details are presented side-by-side with a list of items
  * in a {@link MoviesActivity}.
  */
-public class MovieDetailActivity extends AppCompatActivity {
+public class DetailActivity extends BaseActivity {
+
+    @Bind(R.id.detail_toolbar)
+    Toolbar mToolbar;
+
+    @Bind(R.id.fab)
+    FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        setSupportActionBar(mToolbar);
+
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
@@ -57,9 +65,9 @@ public class MovieDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putLong(MovieDetailFragment.ARG_ITEM_ID,
-                    getIntent().getLongExtra(MovieDetailFragment.ARG_ITEM_ID, 0));
-            MovieDetailFragment fragment = new MovieDetailFragment();
+            arguments.putLong(DetailFragment.ARG_ITEM_ID,
+                    getIntent().getLongExtra(DetailFragment.ARG_ITEM_ID, 0));
+            DetailFragment fragment = new DetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.movie_detail_container, fragment)

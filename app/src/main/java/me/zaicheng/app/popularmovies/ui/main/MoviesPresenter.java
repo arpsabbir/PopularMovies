@@ -10,7 +10,6 @@ import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.rxbus.RxBus;
 import me.zaicheng.app.popularmovies.ui.base.Presenter;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -25,21 +24,19 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
     private final DataManager mDataManager;
     private final RxBus mBus;
     private MoviesMvpView mMvpView;
-    private Subscription mLoadMoviesSubscription;
-    private Subscription mSyncMoviesSubscription;
-    private CompositeSubscription mCompositeSubscription;
+    private CompositeSubscription mSubscription;
 
     @Inject
     public MoviesPresenter(DataManager dataManager, RxBus bus) {
         mDataManager = dataManager;
         mBus = bus;
+        mSubscription = new CompositeSubscription();
     }
 
     @Override
     public void attachView(MoviesMvpView mvpView) {
         mMvpView = mvpView;
-        mCompositeSubscription = new CompositeSubscription();
-        mCompositeSubscription.add(mBus.toObservable().subscribe(new Action1<Object>() {
+        mSubscription.add(mBus.toObservable().subscribe(new Action1<Object>() {
             @Override
             public void call(Object event) {
                 if (event instanceof BusEvent.MoviesSaved) {
@@ -52,21 +49,14 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
     @Override
     public void detachView() {
         mMvpView = null;
-        if (mLoadMoviesSubscription != null) {
-            mLoadMoviesSubscription.unsubscribe();
-        }
 
-        if (mCompositeSubscription != null) {
-            mCompositeSubscription.unsubscribe();
-        }
-
-        if (mSyncMoviesSubscription != null) {
-            mSyncMoviesSubscription.unsubscribe();
+        if (mSubscription != null) {
+            mSubscription.unsubscribe();
         }
     }
 
     public void syncMovies() {
-        mSyncMoviesSubscription = mDataManager.syncMovies()
+        mSubscription.add(mDataManager.syncMovies()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Movie>() {
@@ -84,11 +74,11 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
                     public void onNext(Movie movie) {
                         Timber.d(movie.toString());
                     }
-                });
+                }));
     }
 
     public void loadMovies() {
-        mLoadMoviesSubscription = mDataManager.getMoviesFromDb()
+        mSubscription.add(mDataManager.getMoviesFromDb()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<List<Movie>>() {
@@ -111,6 +101,6 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
                             mMvpView.showMoviesEmpty();
                         }
                     }
-                });
+                }));
     }
 }

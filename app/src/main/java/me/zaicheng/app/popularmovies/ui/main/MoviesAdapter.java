@@ -18,8 +18,8 @@ import javax.inject.Inject;
 
 import me.zaicheng.app.popularmovies.R;
 import me.zaicheng.app.popularmovies.data.model.Movie;
-import me.zaicheng.app.popularmovies.ui.detail.MovieDetailActivity;
-import me.zaicheng.app.popularmovies.ui.detail.MovieDetailFragment;
+import me.zaicheng.app.popularmovies.ui.detail.DetailActivity;
+import me.zaicheng.app.popularmovies.ui.detail.DetailFragment;
 
 /**
  * Created by vmlinz on 3/23/16.
@@ -54,18 +54,18 @@ public class MoviesAdapter
             public void onClick(View v) {
                 if (mActivity.get().mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putLong(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.tmdb_id);
+                    arguments.putLong(DetailFragment.ARG_ITEM_ID, holder.mItem.tmdb_id);
                     Log.d(MoviesActivity.TAG, "onClick: id = " + holder.mItem.tmdb_id);
 
-                    MovieDetailFragment fragment = new MovieDetailFragment();
+                    DetailFragment fragment = new DetailFragment();
                     fragment.setArguments(arguments);
                     mActivity.get().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.movie_detail_container, fragment)
                             .commit();
                 } else {
                     Context context = v.getContext();
-                    Intent intent = new Intent(context, MovieDetailActivity.class);
-                    intent.putExtra(MovieDetailFragment.ARG_ITEM_ID, holder.mItem.tmdb_id);
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra(DetailFragment.ARG_ITEM_ID, holder.mItem.tmdb_id);
                     Log.d(MoviesActivity.TAG, "onClick: id = " + holder.mItem.tmdb_id);
 
                     context.startActivity(intent);
