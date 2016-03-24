@@ -23,7 +23,6 @@ import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
  * in a {@link MoviesActivity}.
  */
 public class DetailActivity extends BaseActivity {
-
     @Bind(R.id.detail_toolbar)
     Toolbar mToolbar;
 
@@ -33,6 +32,7 @@ public class DetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activityComponent().inject(this);
         setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
 
@@ -90,5 +90,10 @@ public class DetailActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

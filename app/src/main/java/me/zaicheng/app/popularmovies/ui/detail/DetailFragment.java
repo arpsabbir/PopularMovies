@@ -88,4 +88,9 @@ public class DetailFragment extends Fragment implements DetailMvpView {
         DialogFactory.createSimpleOkErrorDialog(getActivity(),
                 getString(R.string.error_showing_movie_detail)).show();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

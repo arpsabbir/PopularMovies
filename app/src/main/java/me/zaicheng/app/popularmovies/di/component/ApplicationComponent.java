@@ -3,6 +3,8 @@ package me.zaicheng.app.popularmovies.di.component;
 import android.app.Application;
 import android.content.Context;
 
+import com.squareup.leakcanary.RefWatcher;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -26,4 +28,5 @@ public interface ApplicationComponent {
     MovieService movieService();
     DataManager dataManager();
     RxBus rxBus();
+    RefWatcher refWatcher();
 }

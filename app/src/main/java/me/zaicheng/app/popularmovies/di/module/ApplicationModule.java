@@ -3,10 +3,13 @@ package me.zaicheng.app.popularmovies.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.squareup.leakcanary.RefWatcher;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import me.zaicheng.app.popularmovies.MovieApplication;
 import me.zaicheng.app.popularmovies.data.remote.MovieService;
 import me.zaicheng.app.popularmovies.di.ApplicationContext;
 import me.zaicheng.app.popularmovies.rxbus.RxBus;
@@ -45,5 +48,11 @@ public class ApplicationModule {
     @Singleton
     MovieService provideMovieService() {
         return MovieService.Creator.newMovieService();
+    }
+
+    @Provides
+    @Singleton
+    RefWatcher provideRefWatcher() {
+        return MovieApplication.getRefWatcher(mApplication);
     }
 }
