@@ -48,7 +48,7 @@ public class DetailFragment extends Fragment implements DetailMvpView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        // setRetainInstance(true);
         ((BaseActivity) getActivity()).activityComponent().inject(this);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
