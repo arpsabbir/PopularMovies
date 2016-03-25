@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -76,7 +77,9 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
             mTwoPane = true;
         }
 
+        GridLayoutManager glm = new GridLayoutManager(this, 2);
         mRecyclerView.setAdapter(mMoviesAdapter);
+        mRecyclerView.setLayoutManager(glm);
         mMoviesPresenter.attachView(this);
         mMoviesPresenter.syncMovies();
     }
