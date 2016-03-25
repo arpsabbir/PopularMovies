@@ -77,7 +77,12 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
             mTwoPane = true;
         }
 
-        GridLayoutManager glm = new GridLayoutManager(this, 2);
+        GridLayoutManager glm;
+        if (mTwoPane) {
+            glm = new GridLayoutManager(this, 1);
+        } else {
+            glm = new GridLayoutManager(this, 2);
+        }
         mRecyclerView.setAdapter(mMoviesAdapter);
         mRecyclerView.setLayoutManager(glm);
         mMoviesPresenter.attachView(this);
