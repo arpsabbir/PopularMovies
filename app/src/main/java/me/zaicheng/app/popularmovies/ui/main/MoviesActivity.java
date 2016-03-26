@@ -86,7 +86,7 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
         mRecyclerView.setAdapter(mMoviesAdapter);
         mRecyclerView.setLayoutManager(glm);
         mMoviesPresenter.attachView(this);
-        if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey(MoviesPresenter.MOVIES_KEY)) {
             mMoviesPresenter.syncMovies();
         } else {
             mMoviesPresenter.restoreInstanceState(savedInstanceState);

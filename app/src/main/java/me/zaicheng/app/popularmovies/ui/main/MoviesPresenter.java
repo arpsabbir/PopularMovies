@@ -25,6 +25,8 @@ import timber.log.Timber;
  */
 public class MoviesPresenter implements Presenter<MoviesMvpView> {
 
+    static final String MOVIES_KEY = "movies";
+
     private final DataManager mDataManager;
     private final RxBus mBus;
     private MoviesMvpView mMvpView;
