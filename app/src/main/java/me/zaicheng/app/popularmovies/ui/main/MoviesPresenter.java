@@ -1,5 +1,9 @@
 package me.zaicheng.app.popularmovies.ui.main;
 
+import android.os.Bundle;
+
+import org.parceler.Parcels;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -102,5 +106,16 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
                         }
                     }
                 }));
+    }
+
+    public void restoreInstanceState(Bundle savedInstanceState) {
+        List<Movie> movies= Parcels.unwrap(savedInstanceState.getParcelable("movies"));
+        if ((movies != null) && !movies.isEmpty()) {
+            mMvpView.showMovies(movies);
+        }
+    }
+
+    public void saveInstanceState(Bundle outState, List<Movie> movies) {
+        outState.putParcelable("movies", Parcels.wrap(movies));
     }
 }

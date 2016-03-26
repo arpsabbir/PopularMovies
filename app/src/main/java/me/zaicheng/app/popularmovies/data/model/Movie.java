@@ -10,6 +10,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +19,12 @@ import javax.annotation.Generated;
 
 import me.zaicheng.app.popularmovies.data.local.MovieDatabase;
 
+@Parcel(analyze = {Movie.class})
 @Table(database = MovieDatabase.class, name = "movies")
 @Generated("org.jsonschema2pojo")
 public class Movie extends BaseModel {
+    public Movie() {
+    }
 
     @SerializedName("adult")
     @Expose

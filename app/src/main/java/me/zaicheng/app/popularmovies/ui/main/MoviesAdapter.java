@@ -98,6 +98,10 @@ public class MoviesAdapter
         mMovies = movies;
     }
 
+    public List<Movie> getMovies() {
+        return mMovies;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         @Bind(R.id.movie_poster)
