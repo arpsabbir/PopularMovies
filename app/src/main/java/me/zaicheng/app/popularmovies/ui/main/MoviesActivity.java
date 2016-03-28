@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import java.util.Collections;
@@ -48,6 +50,7 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Bind(R.id.fab) FloatingActionButton mFab;
     @Bind(R.id.movie_detail_container) @Nullable View mContainer;
+    @Bind(R.id.spinner) AppCompatSpinner mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,9 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
 
         setSupportActionBar(mToolbar);
         mToolbar.setTitle(getTitle());
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        setupSpinner();
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +109,23 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
     protected void onDestroy() {
         super.onDestroy();
         mMoviesPresenter.detachView();
+        Timber.d("onDestroy");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    private void setupSpinner() {
+        String[] options = new String[] {
+                "Most Popular Movies",
+                "Top Rated Movies",
+                "Favorite Movies"
+        };
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(), android.R.layout.simple_spinner_dropdown_item, options);
+        mSpinner.setAdapter(arrayAdapter);
     }
 
     // MVP view callbacks
