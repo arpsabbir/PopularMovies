@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.zaicheng.app.popularmovies.R;
+import me.zaicheng.app.popularmovies.data.local.PreferenceHelper;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.ui.base.BaseActivity;
 import me.zaicheng.app.popularmovies.ui.detail.DetailActivity;
@@ -46,11 +48,20 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
     MoviesPresenter mMoviesPresenter;
     MoviesAdapter mMoviesAdapter = new MoviesAdapter(this);
 
-    @Bind(R.id.movie_list) RecyclerView mRecyclerView;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.fab) FloatingActionButton mFab;
-    @Bind(R.id.movie_detail_container) @Nullable View mContainer;
-    @Bind(R.id.spinner) AppCompatSpinner mSpinner;
+    @Inject
+    PreferenceHelper mPreferenceHelper;
+
+    @Bind(R.id.movie_list)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @Bind(R.id.fab)
+    FloatingActionButton mFab;
+    @Bind(R.id.movie_detail_container)
+    @Nullable
+    View mContainer;
+    @Bind(R.id.spinner)
+    AppCompatSpinner mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +129,7 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
     }
 
     private void setupSpinner() {
-        String[] options = new String[] {
+        String[] options = new String[]{
                 "Most Popular Movies",
                 "Top Rated Movies",
                 "Favorite Movies"
@@ -126,6 +137,39 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getSupportActionBar().getThemedContext(), android.R.layout.simple_spinner_dropdown_item, options);
         mSpinner.setAdapter(arrayAdapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Timber.d("Spinner Popup menu item selected: i = %d, l = %d", i, l);
+                switch (i) {
+                    case 0:
+                        mPreferenceHelper.getSharedPreference()
+                                .edit()
+                                .putString(PreferenceHelper.PREF_KEY_MOVIE_ORDER,
+                                        PreferenceHelper.PREF_VALUE_MOVIE_ORDER_POPULAR).apply();
+                        break;
+                    case 1:
+                        mPreferenceHelper.getSharedPreference()
+                                .edit()
+                                .putString(PreferenceHelper.PREF_KEY_MOVIE_ORDER,
+                                        PreferenceHelper.PREF_VALUE_MOVIE_ORDER_TOP_RATED).apply();
+                        break;
+                    case 2:
+                        mPreferenceHelper.getSharedPreference()
+                                .edit()
+                                .putString(PreferenceHelper.PREF_KEY_MOVIE_ORDER,
+                                        PreferenceHelper.PREF_VALUE_MOVIE_ORDER_FAVORITE).apply();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     // MVP view callbacks

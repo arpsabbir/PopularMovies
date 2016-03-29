@@ -9,6 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import me.zaicheng.app.popularmovies.data.local.PreferenceHelper;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.data.model.Movie_Table;
 import me.zaicheng.app.popularmovies.data.remote.MovieService;
@@ -26,12 +27,15 @@ import rx.functions.Func1;
 public class DataManager {
     private final MovieService mMovieService;
     private final RxBus mRxBus;
+    private final PreferenceHelper mPreferenceHelper;
 
     @Inject
     public DataManager(MovieService movieService,
-                       RxBus rxBus) {
-        mMovieService = movieService;
-        mRxBus = rxBus;
+                       RxBus rxBus,
+                       PreferenceHelper mPreferenceHelper) {
+        this.mMovieService = movieService;
+        this.mRxBus = rxBus;
+        this.mPreferenceHelper = mPreferenceHelper;
     }
 
     public Observable<List<Movie>> getPopularMovies() {
@@ -55,13 +59,34 @@ public class DataManager {
     }
 
     public Observable<Movie> syncMovies() {
-        return this.getPopularMovies()
-                .concatMap(new Func1<List<Movie>, Observable<? extends Movie>>() {
-                    @Override
-                    public Observable<? extends Movie> call(List<Movie> movies) {
-                        return setMoviesInDb(movies);
-                    }
-                });
+        if (mPreferenceHelper.getSharedPreference()
+                .getString(PreferenceHelper.PREF_KEY_MOVIE_ORDER,
+                        PreferenceHelper.PREF_VALUE_MOVIE_ORDER_POPULAR)
+                .equals(PreferenceHelper.PREF_VALUE_MOVIE_ORDER_POPULAR)) {
+            // get popular movies
+            return this.getPopularMovies()
+                    .concatMap(new Func1<List<Movie>, Observable<? extends Movie>>() {
+                        @Override
+                        public Observable<? extends Movie> call(List<Movie> movies) {
+                            return setMoviesInDb(movies);
+                        }
+                    });
+        } else if (mPreferenceHelper.getSharedPreference()
+                .getString(PreferenceHelper.PREF_KEY_MOVIE_ORDER,
+                        PreferenceHelper.PREF_VALUE_MOVIE_ORDER_POPULAR)
+                .equals(PreferenceHelper.PREF_VALUE_MOVIE_ORDER_TOP_RATED)) {
+            // get top rated movies
+            return this.getTopRatedMovies()
+                    .concatMap(new Func1<List<Movie>, Observable<? extends Movie>>() {
+                        @Override
+                        public Observable<? extends Movie> call(List<Movie> movies) {
+                            return setMoviesInDb(movies);
+                        }
+                    });
+        } else {
+            // TODO: 3/29/16 Implement fetch favorite movies
+            return Observable.empty();
+        }
     }
 
     public Observable<Void> clearMoviesInDb() {

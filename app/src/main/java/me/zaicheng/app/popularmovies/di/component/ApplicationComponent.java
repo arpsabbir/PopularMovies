@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import me.zaicheng.app.popularmovies.MovieApplication;
 import me.zaicheng.app.popularmovies.data.DataManager;
+import me.zaicheng.app.popularmovies.data.local.PreferenceHelper;
 import me.zaicheng.app.popularmovies.data.remote.MovieService;
 import me.zaicheng.app.popularmovies.di.ApplicationContext;
 import me.zaicheng.app.popularmovies.di.module.ApplicationModule;
@@ -29,4 +30,5 @@ public interface ApplicationComponent {
     DataManager dataManager();
     RxBus rxBus();
     RefWatcher refWatcher();
+    PreferenceHelper preferenceHelper();
 }

@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import me.zaicheng.app.popularmovies.data.BusEvent;
 import me.zaicheng.app.popularmovies.data.DataManager;
+import me.zaicheng.app.popularmovies.data.local.PreferenceHelper;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.rxbus.RxBus;
 import me.zaicheng.app.popularmovies.ui.base.Presenter;
@@ -31,11 +32,13 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
     private final RxBus mBus;
     private MoviesMvpView mMvpView;
     private CompositeSubscription mSubscription;
+    private final PreferenceHelper mPreferenceHelper;
 
     @Inject
-    public MoviesPresenter(DataManager dataManager, RxBus bus) {
+    public MoviesPresenter(DataManager dataManager, RxBus bus, PreferenceHelper preferenceHelper) {
         mDataManager = dataManager;
         mBus = bus;
+        mPreferenceHelper = preferenceHelper;
         mSubscription = new CompositeSubscription();
     }
 
@@ -48,6 +51,14 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
                 if (event instanceof BusEvent.MoviesSaved) {
                     loadMovies();
                 }
+            }
+        }));
+
+        mSubscription.add(mPreferenceHelper.getRxSharedPreference().getString(PreferenceHelper.PREF_KEY_MOVIE_ORDER).asObservable().subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                Timber.d("Movie Order Preference Changed, resync movies database");
+                syncMovies();
             }
         }));
     }
