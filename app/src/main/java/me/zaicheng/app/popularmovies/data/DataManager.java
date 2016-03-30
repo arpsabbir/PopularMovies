@@ -58,6 +58,10 @@ public class DataManager {
                 });
     }
 
+    public Observable<List<Movie>> getFavoriteMovies() {
+        return Observable.just(mPreferenceHelper.getMoviesFromFavorites());
+    }
+
     public Observable<Movie> syncMovies() {
         if (mPreferenceHelper.getSharedPreference()
                 .getString(PreferenceHelper.PREF_KEY_MOVIE_ORDER,
@@ -84,8 +88,19 @@ public class DataManager {
                         }
                     });
         } else {
-            // TODO: 3/29/16 Implement fetch favorite movies
-            return Observable.empty();
+            return this.getFavoriteMovies()
+                    .flatMap(new Func1<List<Movie>, Observable<Movie>>() {
+                        @Override
+                        public Observable<Movie> call(List<Movie> movies) {
+                            return Observable.from(movies);
+                        }
+                    })
+                    .doOnCompleted(new Action0() {
+                        @Override
+                        public void call() {
+                            mRxBus.send(new BusEvent.FavoriteMoviesSynced());
+                        }
+                    });
         }
     }
 
@@ -109,7 +124,6 @@ public class DataManager {
                     Delete.table(Movie.class);
 
                     // try to save movies synchronously as a transaction
-                    // TODO: 3/23/16 Make sure synchronous saving works as expected
                     FlowContentObserver contentObserver = new FlowContentObserver();
                     contentObserver.beginTransaction();
                     for (Movie movie : movies) {

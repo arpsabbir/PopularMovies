@@ -46,10 +46,9 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
 
     @Inject
     MoviesPresenter mMoviesPresenter;
-    MoviesAdapter mMoviesAdapter = new MoviesAdapter(this);
-
     @Inject
     PreferenceHelper mPreferenceHelper;
+    MoviesAdapter mMoviesAdapter;
 
     @Bind(R.id.movie_list)
     RecyclerView mRecyclerView;
@@ -67,6 +66,9 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
+
+        mMoviesAdapter = new MoviesAdapter(this);
+
         setContentView(R.layout.activity_movie_list);
         ButterKnife.bind(this);
 

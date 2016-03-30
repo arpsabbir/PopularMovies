@@ -3,6 +3,11 @@ package me.zaicheng.app.popularmovies.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Singleton;
@@ -34,7 +39,7 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationContext
-    Context provideContext(){
+    Context provideContext() {
         return mApplication;
     }
 
@@ -54,5 +59,25 @@ public class ApplicationModule {
     @Singleton
     RefWatcher provideRefWatcher() {
         return MovieApplication.getRefWatcher(mApplication);
+    }
+
+    @Provides
+    @Singleton
+    Gson provideGson() {
+        return new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                .setExclusionStrategies(new ExclusionStrategy() {
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes f) {
+                        return f.getDeclaredClass().equals(ModelAdapter.class);
+                    }
+
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz) {
+                        return false;
+                    }
+                })
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
     }
 }

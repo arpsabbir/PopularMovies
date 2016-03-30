@@ -6,4 +6,7 @@ package me.zaicheng.app.popularmovies.data;
 public class BusEvent {
     public static class MoviesSaved {
     }
+
+    public static class FavoriteMoviesSynced {
+    }
 }

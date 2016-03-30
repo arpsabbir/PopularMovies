@@ -14,6 +14,7 @@ import me.zaicheng.app.popularmovies.data.local.PreferenceHelper;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.rxbus.RxBus;
 import me.zaicheng.app.popularmovies.ui.base.Presenter;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -50,6 +51,8 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
             public void call(Object event) {
                 if (event instanceof BusEvent.MoviesSaved) {
                     loadMovies();
+                } else if (event instanceof BusEvent.FavoriteMoviesSynced) {
+                    loadFavoriteMovies();
                 }
             }
         }));
@@ -61,6 +64,33 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
                 syncMovies();
             }
         }));
+    }
+
+    private void loadFavoriteMovies() {
+        mSubscription.add(Observable.just(mPreferenceHelper.getMoviesFromFavorites())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<List<Movie>>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("Movies loaded");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "Error loading the movies");
+                        mMvpView.showError();
+                    }
+
+                    @Override
+                    public void onNext(List<Movie> movies) {
+                        if (!movies.isEmpty()) {
+                            mMvpView.showMovies(movies);
+                        } else {
+                            mMvpView.showMoviesEmpty();
+                        }
+                    }
+                }));
     }
 
     @Override
@@ -85,6 +115,7 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e, "Movies syning error");
+                        mMvpView.showMoviesEmpty();
                     }
 
                     @Override
@@ -122,7 +153,7 @@ public class MoviesPresenter implements Presenter<MoviesMvpView> {
     }
 
     public void restoreInstanceState(Bundle savedInstanceState) {
-        List<Movie> movies= Parcels.unwrap(savedInstanceState.getParcelable("movies"));
+        List<Movie> movies = Parcels.unwrap(savedInstanceState.getParcelable("movies"));
         if ((movies != null) && !movies.isEmpty()) {
             mMvpView.showMovies(movies);
         }

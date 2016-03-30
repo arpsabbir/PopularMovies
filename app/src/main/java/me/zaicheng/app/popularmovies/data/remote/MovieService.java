@@ -62,6 +62,7 @@ public interface MovieService {
                             return false;
                         }
                     })
+                    .excludeFieldsWithoutExposeAnnotation()
                     .create();
 
             Retrofit retrofit = new Retrofit.Builder()

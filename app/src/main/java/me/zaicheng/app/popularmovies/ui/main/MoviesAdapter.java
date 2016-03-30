@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.zaicheng.app.popularmovies.R;
+import me.zaicheng.app.popularmovies.data.local.PreferenceHelper;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.ui.detail.DetailActivity;
 import me.zaicheng.app.popularmovies.ui.detail.DetailFragment;
@@ -35,11 +36,13 @@ public class MoviesAdapter
 
     private WeakReference<MoviesActivity> mActivity;
     private List<Movie> mMovies;
+    private PreferenceHelper mPref;
 
     @Inject
-    public MoviesAdapter(MoviesActivity mActivity) {
-        this.mActivity = new WeakReference<>(mActivity);
+    public MoviesAdapter(MoviesActivity activity) {
+        mActivity = new WeakReference<>(activity);
         mMovies = new ArrayList<>();
+        mPref = mActivity.get().mPreferenceHelper;
     }
 
     @Override
@@ -85,6 +88,8 @@ public class MoviesAdapter
 
                     context.startActivity(intent);
                 }
+
+                mPref.addMovieToFavorites(holder.mMovie);
             }
         });
     }
