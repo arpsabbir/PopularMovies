@@ -9,7 +9,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -62,22 +65,22 @@ public class PreferenceHelper {
         Type type = new TypeToken<List<Movie>>() {}.getType();
         String moviesString = mPref.getString(PREF_KEY_FAVORITE_MOVIES, "");
         List<Movie> movieList;
+        Set<Movie> movieSet;
+
         if (!moviesString.equals("")) {
             movieList = mGson.fromJson(moviesString, type);
-
-            for (Movie m : movieList) {
-                if (m.tmdb_id == movie.tmdb_id) {
-                    movieList.remove(m);
-                }
-            }
         } else {
             movieList = new ArrayList<>();
         }
 
-        movieList.add(movie);
+        movieSet = new HashSet<>(movieList);
+
+        if (!movieSet.contains(movie)) {
+            movieSet.add(movie);
+        }
 
         mPref.edit()
-                .putString(PREF_KEY_FAVORITE_MOVIES, mGson.toJson(movieList))
+                .putString(PREF_KEY_FAVORITE_MOVIES, mGson.toJson(Arrays.asList(movieSet.toArray())))
                 .apply();
     }
 
@@ -90,10 +93,8 @@ public class PreferenceHelper {
         String moviesString = mPref.getString(PREF_KEY_FAVORITE_MOVIES, "");
         List<Movie> movieList = mGson.fromJson(moviesString, type);
 
-        for (Movie m : movieList) {
-            if (m.tmdb_id == movie.tmdb_id) {
-                movieList.remove(m);
-            }
+        if (movieList.contains(movie)) {
+            movieList.remove(movie);
         }
 
         mPref.edit()

@@ -58,10 +58,6 @@ public class DataManager {
                 });
     }
 
-    public Observable<List<Movie>> getFavoriteMovies() {
-        return Observable.just(mPreferenceHelper.getMoviesFromFavorites());
-    }
-
     public Observable<Movie> syncMovies() {
         if (mPreferenceHelper.getSharedPreference()
                 .getString(PreferenceHelper.PREF_KEY_MOVIE_ORDER,
@@ -88,13 +84,8 @@ public class DataManager {
                         }
                     });
         } else {
-            return this.getFavoriteMovies()
-                    .flatMap(new Func1<List<Movie>, Observable<Movie>>() {
-                        @Override
-                        public Observable<Movie> call(List<Movie> movies) {
-                            return Observable.from(movies);
-                        }
-                    })
+            return Observable
+                    .from(mPreferenceHelper.getMoviesFromFavorites())
                     .doOnCompleted(new Action0() {
                         @Override
                         public void call() {
