@@ -22,7 +22,6 @@ import me.zaicheng.app.popularmovies.ui.base.BaseActivity;
 import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
 import me.zaicheng.app.popularmovies.utils.DialogFactory;
 import me.zaicheng.app.popularmovies.utils.MovieUtil;
-import timber.log.Timber;
 
 /**
  * A fragment representing a single Movie detail screen.
@@ -36,6 +35,7 @@ public class DetailFragment extends Fragment implements DetailMvpView {
     @Bind(R.id.tv_movie_detail_overview) TextView mMovieOverview;
     @Bind(R.id.tv_movie_detail_release_date) TextView mMovieReleaseDate;
     @Bind(R.id.tv_movie_detail_vote_average) TextView mMovieVoteAverage;
+    @Bind(R.id.tv_movie_detail_title) TextView mMovieTitle;
     @Bind(R.id.image_movie_detail_poster) ImageView mMoviePoster;
 
     /**
@@ -89,8 +89,8 @@ public class DetailFragment extends Fragment implements DetailMvpView {
     // MvpView Callbacks for Presenter
     @Override
     public void showDetail(Movie movie) {
-        Timber.wtf("Fuck, are you here?");
         mMovieOverview.setText(movie.overview);
+        mMovieTitle.setText(movie.title);
         mMovieReleaseDate.setText(movie.releaseDate);
         mMovieVoteAverage.setText(String.valueOf(movie.voteAverage));
 
