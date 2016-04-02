@@ -6,7 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import javax.inject.Inject;
 
@@ -17,6 +21,8 @@ import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.ui.base.BaseActivity;
 import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
 import me.zaicheng.app.popularmovies.utils.DialogFactory;
+import me.zaicheng.app.popularmovies.utils.MovieUtil;
+import timber.log.Timber;
 
 /**
  * A fragment representing a single Movie detail screen.
@@ -27,7 +33,10 @@ import me.zaicheng.app.popularmovies.utils.DialogFactory;
 public class DetailFragment extends Fragment implements DetailMvpView {
     @Inject DetailPresenter mDetailPresenter;
 
-    @Bind(R.id.movie_detail) TextView mMovieDetail;
+    @Bind(R.id.tv_movie_detail_overview) TextView mMovieOverview;
+    @Bind(R.id.tv_movie_detail_release_date) TextView mMovieReleaseDate;
+    @Bind(R.id.tv_movie_detail_vote_average) TextView mMovieVoteAverage;
+    @Bind(R.id.image_movie_detail_poster) ImageView mMoviePoster;
 
     /**
      * The fragment argument representing the item ID that this fragment
@@ -80,7 +89,21 @@ public class DetailFragment extends Fragment implements DetailMvpView {
     // MvpView Callbacks for Presenter
     @Override
     public void showDetail(Movie movie) {
-        mMovieDetail.setText(movie.overview);
+        Timber.wtf("Fuck, are you here?");
+        mMovieOverview.setText(movie.overview);
+        mMovieReleaseDate.setText(movie.releaseDate);
+        mMovieVoteAverage.setText(String.valueOf(movie.voteAverage));
+
+        if (movie.posterPath != null) {
+            Glide.with(this)
+                    .load(MovieUtil.getPosterImageUrl("w185", movie.posterPath))
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(mMoviePoster);
+        } else {
+            Glide.clear(mMoviePoster);
+            mMoviePoster.setImageDrawable(null);
+        }
     }
 
     @Override
