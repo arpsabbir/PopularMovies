@@ -12,13 +12,18 @@ import javax.inject.Singleton;
 import me.zaicheng.app.popularmovies.data.local.PreferenceHelper;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.data.model.Movie_Table;
+import me.zaicheng.app.popularmovies.data.model.Review;
+import me.zaicheng.app.popularmovies.data.model.Trailer;
 import me.zaicheng.app.popularmovies.data.remote.MovieService;
 import me.zaicheng.app.popularmovies.data.remote.MoviesResponse;
+import me.zaicheng.app.popularmovies.data.remote.ReviewsResponse;
+import me.zaicheng.app.popularmovies.data.remote.TrailersResponse;
 import me.zaicheng.app.popularmovies.rxbus.RxBus;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action0;
 import rx.functions.Func1;
+import timber.log.Timber;
 
 /**
  * Created by vmlinz on 3/23/16.
@@ -54,6 +59,28 @@ public class DataManager {
                     @Override
                     public List<Movie> call(MoviesResponse moviesResponse) {
                         return moviesResponse.movies;
+                    }
+                });
+    }
+
+    public Observable<List<Trailer>> getTrailersById(long id) {
+        return mMovieService.getTrailersById(id)
+                .map(new Func1<TrailersResponse, List<Trailer>>() {
+                    @Override
+                    public List<Trailer> call(TrailersResponse trailersResponse) {
+                        Timber.d(trailersResponse.toString());
+                        return trailersResponse.trailers;
+                    }
+                });
+    }
+
+    public Observable<List<Review>> getReviewsById(long id) {
+        return mMovieService.getReviewsById(id)
+                .map(new Func1<ReviewsResponse, List<Review>>() {
+                    @Override
+                    public List<Review> call(ReviewsResponse reviewsResponse) {
+                        Timber.d(reviewsResponse.toString());
+                        return reviewsResponse.reviews;
                     }
                 });
     }

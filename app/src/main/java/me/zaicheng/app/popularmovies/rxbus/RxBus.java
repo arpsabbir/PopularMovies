@@ -33,13 +33,13 @@ public class RxBus {
         return new RxBus();
     }
 
-    private final Subject<Object, Object> _bus = new SerializedSubject<>(PublishSubject.create());
+    private final Subject<Object, Object> mBus = new SerializedSubject<>(PublishSubject.create());
 
     public void send(Object o) {
-        _bus.onNext(o);
+        mBus.onNext(o);
     }
 
     public Observable<Object> toObservable() {
-        return _bus;
+        return mBus;
     }
 }

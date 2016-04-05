@@ -37,15 +37,15 @@ public interface MovieService {
 
     // get movie details by id
     @GET("movie/{id}")
-    Observable<MovieResponse> getMovieById(@Path("id") int id);
+    Observable<MovieResponse> getMovieById(@Path("id") long id);
 
     // get movie trailers by id
-    @GET("movie/{id}/trailers")
-    Observable<TrailersResponse> getTrailersById(@Path("id") int id);
+    @GET("movie/{id}/videos")
+    Observable<TrailersResponse> getTrailersById(@Path("id") long id);
 
     // get movie reviews by id
     @GET("movie/{id}/reviews")
-    Observable<ReviewsResponse> getReviewsById(@Path("id") int id);
+    Observable<ReviewsResponse> getReviewsById(@Path("id") long id);
 
     class Creator {
         public static MovieService newMovieService() {

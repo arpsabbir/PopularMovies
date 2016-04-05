@@ -77,6 +77,8 @@ public class DetailFragment extends Fragment implements DetailMvpView {
         mDetailPresenter.attachView(this);
 
         mDetailPresenter.loadMovie(movieId);
+        mDetailPresenter.loadReviews(movieId);
+        mDetailPresenter.loadTrailers(movieId);
         return rootView;
     }
 
