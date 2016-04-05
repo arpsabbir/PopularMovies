@@ -39,6 +39,14 @@ public interface MovieService {
     @GET("movie/{id}")
     Observable<MovieResponse> getMovieById(@Path("id") int id);
 
+    // get movie trailers by id
+    @GET("movie/{id}/trailers")
+    Observable<TrailersResponse> getTrailersById(@Path("id") int id);
+
+    // get movie reviews by id
+    @GET("movie/{id}/reviews")
+    Observable<ReviewsResponse> getReviewsById(@Path("id") int id);
+
     class Creator {
         public static MovieService newMovieService() {
             OkHttpClient client = new OkHttpClient.Builder()
