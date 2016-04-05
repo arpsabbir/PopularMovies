@@ -18,6 +18,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -33,6 +34,10 @@ public interface MovieService {
     // get top rated movies
     @GET("movie/top_rated")
     Observable<MoviesResponse> getTopRatedMoviesObservable();
+
+    // get movie details by id
+    @GET("movie/{id}")
+    Observable<MovieResponse> getMovieById(@Path("id") int id);
 
     class Creator {
         public static MovieService newMovieService() {

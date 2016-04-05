@@ -1,3 +1,4 @@
+
 package me.zaicheng.app.popularmovies.data.remote;
 
 import com.google.gson.annotations.Expose;
@@ -12,17 +13,20 @@ import java.util.List;
 
 import javax.annotation.Generated;
 
-import me.zaicheng.app.popularmovies.data.model.Movie;
+import me.zaicheng.app.popularmovies.data.model.Review;
 
 @Generated("org.jsonschema2pojo")
-public class MoviesResponse {
+public class ReviewsResponse {
 
+    @SerializedName("id")
+    @Expose
+    public long id;
     @SerializedName("page")
     @Expose
     public long page;
     @SerializedName("results")
     @Expose
-    public List<Movie> movies = new ArrayList<Movie>();
+    public List<Review> reviews = new ArrayList<Review>();
     @SerializedName("total_pages")
     @Expose
     public long totalPages;
@@ -37,7 +41,7 @@ public class MoviesResponse {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(page).append(movies).append(totalPages).append(totalResults).toHashCode();
+        return new HashCodeBuilder().append(id).append(page).append(reviews).append(totalPages).append(totalResults).toHashCode();
     }
 
     @Override
@@ -45,11 +49,11 @@ public class MoviesResponse {
         if (other == this) {
             return true;
         }
-        if ((other instanceof MoviesResponse) == false) {
+        if ((other instanceof ReviewsResponse) == false) {
             return false;
         }
-        MoviesResponse rhs = ((MoviesResponse) other);
-        return new EqualsBuilder().append(page, rhs.page).append(movies, rhs.movies).append(totalPages, rhs.totalPages).append(totalResults, rhs.totalResults).isEquals();
+        ReviewsResponse rhs = ((ReviewsResponse) other);
+        return new EqualsBuilder().append(id, rhs.id).append(page, rhs.page).append(reviews, rhs.reviews).append(totalPages, rhs.totalPages).append(totalResults, rhs.totalResults).isEquals();
     }
 
 }

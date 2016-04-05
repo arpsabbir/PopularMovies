@@ -43,7 +43,7 @@ public class DataManager {
                 .map(new Func1<MoviesResponse, List<Movie>>() {
                     @Override
                     public List<Movie> call(MoviesResponse moviesResponse) {
-                        return moviesResponse.results;
+                        return moviesResponse.movies;
                     }
                 });
     }
@@ -53,7 +53,7 @@ public class DataManager {
                 .map(new Func1<MoviesResponse, List<Movie>>() {
                     @Override
                     public List<Movie> call(MoviesResponse moviesResponse) {
-                        return moviesResponse.results;
+                        return moviesResponse.movies;
                     }
                 });
     }
