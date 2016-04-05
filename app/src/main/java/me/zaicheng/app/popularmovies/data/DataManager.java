@@ -23,7 +23,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action0;
 import rx.functions.Func1;
-import timber.log.Timber;
 
 /**
  * Created by vmlinz on 3/23/16.
@@ -68,7 +67,6 @@ public class DataManager {
                 .map(new Func1<TrailersResponse, List<Trailer>>() {
                     @Override
                     public List<Trailer> call(TrailersResponse trailersResponse) {
-                        Timber.d(trailersResponse.toString());
                         return trailersResponse.trailers;
                     }
                 });
@@ -79,7 +77,6 @@ public class DataManager {
                 .map(new Func1<ReviewsResponse, List<Review>>() {
                     @Override
                     public List<Review> call(ReviewsResponse reviewsResponse) {
-                        Timber.d(reviewsResponse.toString());
                         return reviewsResponse.reviews;
                     }
                 });
