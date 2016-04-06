@@ -9,6 +9,7 @@ import me.zaicheng.app.popularmovies.data.DataManager;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.data.model.Review;
 import me.zaicheng.app.popularmovies.data.model.Trailer;
+import me.zaicheng.app.popularmovies.data.remote.MovieResponse;
 import me.zaicheng.app.popularmovies.rxbus.RxBus;
 import me.zaicheng.app.popularmovies.ui.base.Presenter;
 import rx.Subscriber;
@@ -49,6 +50,8 @@ public class DetailPresenter implements Presenter<DetailMvpView> {
 
     public void loadMovie(long id) {
         mSubscription.add(mDataManager.getMovieById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Movie>() {
                     @Override
                     public void onCompleted() {
@@ -64,13 +67,13 @@ public class DetailPresenter implements Presenter<DetailMvpView> {
                     @Override
                     public void onNext(Movie movie) {
                         Timber.d("Showing movie detail");
-                        mMvpView.get().showDetail(movie);
+                        mMvpView.get().showMovie(movie);
                     }
                 }));
     }
 
     public void loadTrailers(long id) {
-        mSubscription.add(mDataManager.getTrailersById(id)
+        mSubscription.add(mDataManager.getMovieTrailersById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Trailer>>() {
@@ -87,12 +90,13 @@ public class DetailPresenter implements Presenter<DetailMvpView> {
                     @Override
                     public void onNext(List<Trailer> trailers) {
                         Timber.d(trailers.toString());
+                        mMvpView.get().showTrailers(trailers);
                     }
                 }));
     }
 
     public void loadReviews(long id) {
-        mSubscription.add(mDataManager.getReviewsById(id)
+        mSubscription.add(mDataManager.getMovieReviewsById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Review>>() {
@@ -109,6 +113,30 @@ public class DetailPresenter implements Presenter<DetailMvpView> {
                     @Override
                     public void onNext(List<Review> reviews) {
                         Timber.d(reviews.toString());
+                        mMvpView.get().showReviews(reviews);
+                    }
+                }));
+    }
+
+    public void loadDetails(long id) {
+        mSubscription.add(mDataManager.getMovieDetailsById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<MovieResponse>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("Movie details loaded");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "Failed to load movie details");
+                    }
+
+                    @Override
+                    public void onNext(MovieResponse movieResponse) {
+                        Timber.d(movieResponse.toString());
+                        mMvpView.get().showDetails(movieResponse);
                     }
                 }));
     }

@@ -2,8 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
@@ -20,10 +18,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/movie_list"
         android:name="me.zaicheng.app.popularmovies.MovieListFragment"
-        android:layout_width="@dimen/item_width"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         tools:context=".ui.main.MoviesActivity"
         tools:listitem="@layout/movie_list_content" />
 
@@ -31,6 +28,6 @@
         android:id="@+id/movie_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3" />
+        android:layout_weight="2" />
 
 </LinearLayout>

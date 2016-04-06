@@ -14,6 +14,7 @@ import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.data.model.Movie_Table;
 import me.zaicheng.app.popularmovies.data.model.Review;
 import me.zaicheng.app.popularmovies.data.model.Trailer;
+import me.zaicheng.app.popularmovies.data.remote.MovieResponse;
 import me.zaicheng.app.popularmovies.data.remote.MovieService;
 import me.zaicheng.app.popularmovies.data.remote.MoviesResponse;
 import me.zaicheng.app.popularmovies.data.remote.ReviewsResponse;
@@ -43,7 +44,7 @@ public class DataManager {
     }
 
     public Observable<List<Movie>> getPopularMovies() {
-        return mMovieService.getPopularMoviesObservable()
+        return mMovieService.getPopularMovies()
                 .map(new Func1<MoviesResponse, List<Movie>>() {
                     @Override
                     public List<Movie> call(MoviesResponse moviesResponse) {
@@ -53,7 +54,7 @@ public class DataManager {
     }
 
     public Observable<List<Movie>> getTopRatedMovies() {
-        return mMovieService.getTopRatedMoviesObservable()
+        return mMovieService.getTopRatedMovies()
                 .map(new Func1<MoviesResponse, List<Movie>>() {
                     @Override
                     public List<Movie> call(MoviesResponse moviesResponse) {
@@ -62,8 +63,8 @@ public class DataManager {
                 });
     }
 
-    public Observable<List<Trailer>> getTrailersById(long id) {
-        return mMovieService.getTrailersById(id)
+    public Observable<List<Trailer>> getMovieTrailersById(long id) {
+        return mMovieService.getMovieTrailersById(id)
                 .map(new Func1<TrailersResponse, List<Trailer>>() {
                     @Override
                     public List<Trailer> call(TrailersResponse trailersResponse) {
@@ -72,14 +73,18 @@ public class DataManager {
                 });
     }
 
-    public Observable<List<Review>> getReviewsById(long id) {
-        return mMovieService.getReviewsById(id)
+    public Observable<List<Review>> getMovieReviewsById(long id) {
+        return mMovieService.getMovieReviewsById(id)
                 .map(new Func1<ReviewsResponse, List<Review>>() {
                     @Override
                     public List<Review> call(ReviewsResponse reviewsResponse) {
                         return reviewsResponse.reviews;
                     }
                 });
+    }
+
+    public Observable<MovieResponse> getMovieDetailsById(long id) {
+        return mMovieService.getMovieDetailsById(id);
     }
 
     public Observable<Movie> syncMovies() {

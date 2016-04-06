@@ -5,7 +5,5 @@
     android:name="me.zaicheng.app.popularmovies.MovieListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     tools:context=".ui.main.MoviesActivity"
     tools:listitem="@layout/movie_list_content" />

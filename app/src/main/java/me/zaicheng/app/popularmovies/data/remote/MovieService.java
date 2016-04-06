@@ -29,23 +29,23 @@ public interface MovieService {
 
     // get Popular movies
     @GET("movie/popular")
-    Observable<MoviesResponse> getPopularMoviesObservable();
+    Observable<MoviesResponse> getPopularMovies();
 
     // get top rated movies
     @GET("movie/top_rated")
-    Observable<MoviesResponse> getTopRatedMoviesObservable();
+    Observable<MoviesResponse> getTopRatedMovies();
 
     // get movie details by id
     @GET("movie/{id}")
-    Observable<MovieResponse> getMovieById(@Path("id") long id);
+    Observable<MovieResponse> getMovieDetailsById(@Path("id") long id);
 
     // get movie trailers by id
     @GET("movie/{id}/videos")
-    Observable<TrailersResponse> getTrailersById(@Path("id") long id);
+    Observable<TrailersResponse> getMovieTrailersById(@Path("id") long id);
 
     // get movie reviews by id
     @GET("movie/{id}/reviews")
-    Observable<ReviewsResponse> getReviewsById(@Path("id") long id);
+    Observable<ReviewsResponse> getMovieReviewsById(@Path("id") long id);
 
     class Creator {
         public static MovieService newMovieService() {
