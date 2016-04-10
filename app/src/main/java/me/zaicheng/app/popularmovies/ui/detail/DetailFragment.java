@@ -39,6 +39,7 @@ import me.zaicheng.app.popularmovies.utils.MovieUtil;
 public class DetailFragment extends Fragment implements DetailMvpView {
     @Inject DetailPresenter mDetailPresenter;
     @Inject ReviewsAdapter mReviewsAdapter;
+    @Inject TrailersAdapter mTrailersAdapter;
 
     @Bind(R.id.tv_movie_detail_overview) TextView mMovieOverview;
     @Bind(R.id.tv_movie_detail_release_date) TextView mMovieReleaseDate;
@@ -87,10 +88,15 @@ public class DetailFragment extends Fragment implements DetailMvpView {
         final View rootView = inflater.inflate(R.layout.movie_detail, container, false);
         ButterKnife.bind(this, rootView);
 
-        GridLayoutManager glm;
-        glm = new GridLayoutManager(this.getActivity(), 2);
+        GridLayoutManager glmReviews;
+        glmReviews = new GridLayoutManager(this.getActivity(), 1);
         mMovieReviews.setAdapter(mReviewsAdapter);
-        mMovieReviews.setLayoutManager(glm);
+        mMovieReviews.setLayoutManager(glmReviews);
+
+        GridLayoutManager glmTrailers;
+        glmTrailers = new GridLayoutManager(this.getActivity(), 2);
+        mMovieTrailers.setAdapter(mTrailersAdapter);
+        mMovieTrailers.setLayoutManager(glmTrailers);
 
         mDetailPresenter.attachView(this);
 
@@ -129,7 +135,8 @@ public class DetailFragment extends Fragment implements DetailMvpView {
 
     @Override
     public void showTrailers(List<Trailer> trailers) {
-
+        mTrailersAdapter.setTrailers(trailers);
+        mTrailersAdapter.notifyDataSetChanged();
     }
 
     @Override

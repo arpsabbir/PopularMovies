@@ -72,6 +72,16 @@
             android:padding="16dp"
             android:textIsSelectable="true" />
 
+        <TextView
+            style="@android:style/TextAppearance.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingStart="16dp"
+            android:text="@string/trailers" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_movie_detail_trailers"
             android:layout_width="match_parent"
@@ -93,7 +103,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_movie_detail_reviews"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:padding="16dp">
 
         </android.support.v7.widget.RecyclerView>
