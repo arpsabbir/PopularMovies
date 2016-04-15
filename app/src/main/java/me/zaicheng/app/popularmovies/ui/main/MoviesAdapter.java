@@ -88,8 +88,6 @@ public class MoviesAdapter
 
                     context.startActivity(intent);
                 }
-
-                mPref.addMovieToFavorites(holder.mMovie);
             }
         });
     }

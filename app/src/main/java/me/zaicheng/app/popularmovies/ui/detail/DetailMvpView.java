@@ -21,4 +21,6 @@ public interface DetailMvpView extends MvpView {
     void showError();
 
     void showDetails(MovieResponse movieResponse);
+
+    long getMovieId();
 }

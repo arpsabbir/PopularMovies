@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import me.zaicheng.app.popularmovies.data.BusEvent;
 import me.zaicheng.app.popularmovies.data.DataManager;
 import me.zaicheng.app.popularmovies.data.model.Movie;
 import me.zaicheng.app.popularmovies.data.model.Review;
@@ -14,6 +15,7 @@ import me.zaicheng.app.popularmovies.rxbus.RxBus;
 import me.zaicheng.app.popularmovies.ui.base.Presenter;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
@@ -37,7 +39,15 @@ public class DetailPresenter implements Presenter<DetailMvpView> {
     @Override
     public void attachView(DetailMvpView mvpView) {
         mMvpView = new WeakReference<>(mvpView);
-        mSubscription.add(mBus.toObservable().subscribe());
+        mSubscription.add(mBus.toObservable().subscribe(new Action1<Object>() {
+            @Override
+            public void call(Object event) {
+                if (event instanceof BusEvent.FavoriteMovieClicked) {
+                    Timber.d("Favorite Movie Clicked");
+                    favorCurrentMovie();
+                }
+            }
+        }));
     }
 
     @Override
@@ -46,6 +56,29 @@ public class DetailPresenter implements Presenter<DetailMvpView> {
         if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
+    }
+
+    public void favorCurrentMovie() {
+        mSubscription.add(mDataManager.getMovieById(mMvpView.get().getMovieId())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Movie>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("Current movie loaded");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "Failed to load current movie");
+
+                    }
+
+                    @Override
+                    public void onNext(Movie movie) {
+                        Timber.d("Add movie to favorite");
+                        mDataManager.addMovieToFavorites(movie);
+                    }
+                }));
     }
 
     public void loadMovie(long id) {

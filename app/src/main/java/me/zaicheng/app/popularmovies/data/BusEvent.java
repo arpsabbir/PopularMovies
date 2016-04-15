@@ -9,4 +9,7 @@ public class BusEvent {
 
     public static class FavoriteMoviesSynced {
     }
+
+    public static class FavoriteMovieClicked {
+    }
 }

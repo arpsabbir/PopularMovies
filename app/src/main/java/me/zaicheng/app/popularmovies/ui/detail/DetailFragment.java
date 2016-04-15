@@ -157,7 +157,7 @@ public class DetailFragment extends Fragment implements DetailMvpView {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public long getMovieId() {
+        return movieId;
     }
 }

@@ -43,6 +43,10 @@ public class DataManager {
         this.mPreferenceHelper = mPreferenceHelper;
     }
 
+    public void addMovieToFavorites(Movie movie) {
+        mPreferenceHelper.addMovieToFavorites(movie);
+    }
+
     public Observable<List<Movie>> getPopularMovies() {
         return mMovieService.getPopularMovies()
                 .map(new Func1<MoviesResponse, List<Movie>>() {

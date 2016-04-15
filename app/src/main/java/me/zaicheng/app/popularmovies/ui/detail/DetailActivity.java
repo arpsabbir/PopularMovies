@@ -3,16 +3,20 @@ package me.zaicheng.app.popularmovies.ui.detail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.zaicheng.app.popularmovies.R;
+import me.zaicheng.app.popularmovies.data.BusEvent;
+import me.zaicheng.app.popularmovies.rxbus.RxBus;
 import me.zaicheng.app.popularmovies.ui.base.BaseActivity;
 import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
 
@@ -23,9 +27,12 @@ import me.zaicheng.app.popularmovies.ui.main.MoviesActivity;
  * in a {@link MoviesActivity}.
  */
 public class DetailActivity extends BaseActivity {
+
+    @Inject
+    RxBus mBus;
+
     @Bind(R.id.detail_toolbar)
     Toolbar mToolbar;
-
     @Bind(R.id.fab)
     FloatingActionButton mFab;
 
@@ -37,14 +44,6 @@ public class DetailActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -95,5 +94,11 @@ public class DetailActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    // favorite fab click event
+    @OnClick(R.id.fab)
+    public void onFavorMovie(View view) {
+        mBus.send(new BusEvent.FavoriteMovieClicked());
     }
 }
